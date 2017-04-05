@@ -1,0 +1,20 @@
+---
+#image: "ubuntu:16.04"
+
+variables:
+  ANSIBLE_VERSION: "2.2.1"
+
+before_script:
+  - apt-get update
+  - apt-get -y install libffi-dev python3-pip python-dev libssl-dev
+  - pip3 install ansible==$ANSIBLE_VERSION cryptography
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+
+test:
+  script:
+  # Syntax check
+  - "ansible-playbook -i localhost, test/test.yml --syntax-check"
+  # Test Mongdb Server
+  - "ansible-playbook -i localhost, test/test.yml --connection=local"
+  # Connection test
+  - "mongo --eval \"printjson(db.runCommand({ ping: 1 }))\""

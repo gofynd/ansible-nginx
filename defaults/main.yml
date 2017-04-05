@@ -1,0 +1,38 @@
+---
+# defaults file for ansible-nginx
+nginx_user: www-data
+nginx_group: www-data
+nginx_max_clients: 768
+nginx_log_dir: /var/log/nginx
+nginx_access_log_name: "{{ nginx_log_dir }}/access.log"
+nginx_error_log_name: "{{ nginx_log_dir }}/error.log"
+
+nginx_ssl_termination: false
+ssl_dest_dir: /etc/nginx/ssl
+
+nginx_http_params:
+  sendfile: on
+  tcp_nopush: on
+  tcp_nodelay: on
+  keepalive_timeout: 65
+  types_hash_max_size: 2048
+  client_max_body_size: 2M
+  gzip_vary: on
+  gzip_proxied: any
+  gzip_comp_level: 6
+  gzip_buffers: "16 8k"
+  gzip_http_version: 1.1
+  gzip_types: "text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
+
+nginx_htpasswd_file_path: /etc/nginx/.htpasswd
+
+nginx_basic_auth_required: false
+nginx_basic_auth_users:
+  - user_name: foo
+    password: bar
+
+site_config_name: '""'
+nginx_config_path: /etc/nginx/sites-available/{{ site_config_name }}
+
+application_name : '""'
+nginx_template: '""'

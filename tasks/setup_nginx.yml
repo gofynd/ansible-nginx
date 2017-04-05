@@ -1,0 +1,53 @@
+---
+- name: Install the apt packages
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items:
+   - nginx
+   - python-pip
+
+# dep for htpasswd module
+- name: Install the deps on web servers
+  pip: name={{ item }} state=latest use_mirrors=no
+  with_items:
+    - passlib
+  when: nginx_basic_auth_required
+
+- name: Creates ssl_dest_dir  directory
+  file: path={{ ssl_dest_dir }} state=directory mode=0755
+  when: nginx_ssl_termination
+
+- name: Copy the SSL certificate to the remote server
+  copy: content="{{ ssl_crt }}" dest={{ ssl_dest_dir }}/{{ application_name }}.crt
+  when: nginx_ssl_termination
+
+- name: Copy the SSL private key to the remote server
+  copy: content="{{ ssl_key }}" dest={{ ssl_dest_dir }}/{{ application_name }}.key
+  when: nginx_ssl_termination
+
+- name: Create the Nginx configuration file
+  template: src="{{ nginx_template }}"
+            dest="{{ nginx_config_path }}"
+            backup=yes
+  notify: reload nginx
+  when: nginx_template is defined and nginx_template != '""'
+
+# Raises and error and halts the playbook when the validation fails
+- name: Validate nginx config
+  shell: nginx -t
+  changed_when: false
+
+- name: Ensure that the default site is disabled
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: Ensure that the application site is enabled
+  file: src="{{ nginx_config_path }}"
+        dest=/etc/nginx/sites-enabled/{{ site_config_name }}
+        state=link
+  notify: reload nginx
+  when: nginx_template_loaded is defined and nginx_template != '""'
+
+- name: flush handlers to apply config changes
+  meta: flush_handlers
+
+- name: Ensure Nginx service is started
+  service: name=nginx state=started enabled=yes

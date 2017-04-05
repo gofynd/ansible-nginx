@@ -1,0 +1,10 @@
+---
+# tasks file for ansible-nginx
+
+- include: setup_nginx.yml
+  tags:
+     - nginx
+
+- include: setup_users.yml
+  tags:
+     - nginx
