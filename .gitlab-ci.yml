@@ -16,5 +16,3 @@ test:
   - "ansible-playbook -i localhost, test/test.yml --syntax-check"
   # Test Mongdb Server
   - "ansible-playbook -i localhost, test/test.yml --connection=local"
-  # Connection test
-  - "mongo --eval \"printjson(db.runCommand({ ping: 1 }))\""
