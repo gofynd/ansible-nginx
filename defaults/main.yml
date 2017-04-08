@@ -9,6 +9,7 @@ nginx_error_log_name: "error.log"
 
 nginx_ssl_termination: false
 ssl_dest_dir: /etc/nginx/ssl
+nginx_pid_file: /var/run/nginx.pid
 
 nginx_http_params:
   sendfile: "on"

@@ -53,6 +53,12 @@
   notify: reload nginx
   when: nginx_template is defined and nginx_template != '""'
 
+- name: copy nginx systemd service file
+  template: src=nginx.service.j2
+            dest=/lib/systemd/system/nginx.service
+            backup=yes
+  become_user: root
+
 - name: flush handlers to apply config changes
   meta: flush_handlers
 

@@ -4,7 +4,7 @@ user              www-data;
 {% endif %}
 
 worker_processes  {{ ansible_processor_count }};
-pid        /var/run/nginx.pid;
+pid        "{{ nginx_pid_file }}";
 
 
 events {
