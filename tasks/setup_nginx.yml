@@ -51,7 +51,7 @@
         dest=/etc/nginx/sites-enabled/{{ site_config_name }}
         state=link
   notify: reload nginx
-  when: nginx_template_loaded is defined and nginx_template != '""'
+  when: nginx_template is defined and nginx_template != '""'
 
 - name: flush handlers to apply config changes
   meta: flush_handlers
