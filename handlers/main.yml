@@ -6,3 +6,9 @@
 
 - name: reload nginx
   service: name=nginx enabled=yes state=reloaded
+
+- name: reload nginx and systemctl daemon
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: nginx
