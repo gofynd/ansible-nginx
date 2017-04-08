@@ -8,3 +8,4 @@
     mode: 0640
   with_items: "{{ nginx_basic_auth_users }}"
   when: nginx_basic_auth_required
+  no_log: true

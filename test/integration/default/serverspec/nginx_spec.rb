@@ -16,7 +16,8 @@ describe 'Nginx' do
     its(:size) { should > 0 }
   end
 
-  describe file('/etc/nginx/sites-enabled/default') do
-    it { should_not exist}
-  end
+  # conditional test case
+  # describe file('/etc/nginx/sites-enabled/default') do
+  #   it { should_not exist}
+  # end
 end
