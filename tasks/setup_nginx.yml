@@ -58,6 +58,7 @@
             dest=/lib/systemd/system/nginx.service
             backup=yes
   become_user: root
+  notify: reload nginx and systemctl daemon
 
 - name: flush handlers to apply config changes
   meta: flush_handlers
