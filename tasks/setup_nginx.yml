@@ -24,6 +24,12 @@
   copy: content="{{ ssl_key }}" dest={{ ssl_dest_dir }}/{{ application_name }}.key
   when: nginx_ssl_termination
 
+- name: create the nginx base configuration file
+  template: src="{{ nginx_base_config }}"
+            dest="{{ nginx_base_config_path }}"
+            backup=yes
+  notify: reload nginx
+
 - name: Create the Nginx configuration file
   template: src="{{ nginx_template }}"
             dest="{{ nginx_config_path }}"
@@ -38,6 +44,7 @@
 
 - name: Ensure that the default site is disabled
   file: path=/etc/nginx/sites-enabled/default state=absent
+  when: nginx_template is not defined and nginx_template == ""
 
 - name: Ensure that the application site is enabled
   file: src="{{ nginx_config_path }}"
