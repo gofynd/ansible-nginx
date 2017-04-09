@@ -44,7 +44,7 @@
 
 - name: Ensure that the default site is disabled
   file: path=/etc/nginx/sites-enabled/default state=absent
-  when: nginx_template is not defined and nginx_template == ""
+  when: nginx_template is defined
 
 - name: Ensure that the application site is enabled
   file: src="{{ nginx_config_path }}"
