@@ -39,4 +39,3 @@ nginx_base_config: nginx.conf.j2
 nginx_base_config_path: /etc/nginx/nginx.conf
 
 application_name : '""'
-nginx_template: '""'
