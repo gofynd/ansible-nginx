@@ -45,6 +45,7 @@
 - name: Ensure that the default site is disabled
   file: path=/etc/nginx/sites-enabled/default state=absent
   when: nginx_template is defined
+  notify: reload nginx
 
 - name: Ensure that the application site is enabled
   file: src="{{ nginx_config_path }}"
@@ -55,7 +56,7 @@
 
 - name: copy nginx systemd service file
   template: src=nginx.service.j2
-            dest=/lib/systemd/system/nginx.service
+            dest=/etc/systemd/system/nginx.service
             backup=yes
   become_user: root
   notify: reload nginx and systemctl daemon
