@@ -9,7 +9,7 @@ provisioner:
   require_ruby_for_busser: false
   require_chef_for_busser: true
   hosts: all
-
+  ansible_cfg_path: ansible.cfg
 platforms:
   - name: ubuntu-16.04
     driver_config:
