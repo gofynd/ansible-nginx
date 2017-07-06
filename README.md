@@ -1,31 +1,95 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role installs and sets up Nginx web server.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role requires Ansible 2.1 or higher. It has been tested on Ubuntu Xenial
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+A list of role variables with their descriptions is below
+
+```
+# Name of user and group through which nginx runs
+nginx_user: www-data
+nginx_group: www-data
+
+# Max number of concurrent connections opened by a worker process
+nginx_max_clients: 768
+
+# Log file directories
+nginx_log_dir: /var/log/nginx
+nginx_access_log_name: "access.log"
+nginx_error_log_name: "error.log"
+
+# Set this to true if you're terminating SSL over nginx
+nginx_ssl_termination: false
+ssl_dest_dir: /etc/nginx/ssl
+
+# Nginx pid file path
+nginx_pid_file: /var/run/nginx.pid
+
+# Nginx default HTTP Params
+nginx_http_params:
+  sendfile: "on"
+  tcp_nopush: "on"
+  tcp_nodelay: "on"
+  keepalive_timeout: 65
+  types_hash_max_size: 2048
+  client_max_body_size: "2M"
+  gzip_vary: "on"
+  gzip_proxied: "any"
+  gzip_comp_level: 6
+  gzip_buffers: "16 8k"
+  gzip_http_version: 1.1
+  gzip_types: "text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
+
+# Set this to true to to enable basic auth over nginx along with the variable below it
+nginx_basic_auth_required: false
+nginx_basic_auth_users:
+  - user_name: foo
+    password: bar
+nginx_htpasswd_file_path: /etc/nginx/.htpasswd
+
+# Name of site config template
+site_config_name: '""'
+nginx_config_path: /etc/nginx/sites-available/{{ site_config_name }}
+
+nginx_base_config: nginx.conf.j2
+nginx_base_config_path: /etc/nginx/nginx.conf
+
+# Name of the application. Set this variable when enabling SSL termination
+application_name : '""'
+
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
+- Install nginx with a custom site template
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```
+  hosts:
+   - webservers
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  roles:
+    - nginx
+
+  vars_files:
+    - vars/nginx.yml
+    
+  vars:
+    - nginx_template: "{{ playbook_dir }}/templates/mysite_nginx_config.j2"
+
+```
 
 License
 -------
@@ -35,4 +99,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Fynd
