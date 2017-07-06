@@ -1,4 +1,4 @@
-Role Name
+ansible-nginx
 =========
 
 This role installs and sets up Nginx web server.
@@ -6,14 +6,15 @@ This role installs and sets up Nginx web server.
 Requirements
 ------------
 
-This role requires Ansible 2.1 or higher. It has been tested on Ubuntu Xenial
+This role requires Ansible 2.2 or higher. It has been tested on Ubuntu Xenial
 
 Role Variables
 --------------
 
 A list of role variables with their descriptions is below
 
-```
+```yaml
+
 # Name of user and group through which nginx runs
 nginx_user: www-data
 nginx_group: www-data
