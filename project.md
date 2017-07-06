@@ -5,7 +5,7 @@ date: 2017-07-06 12:00:00
 categories: project
 description: Ansible role to setup and configure Nginx web server
 
-img: ansible-nginx_logo.png        //<project-name_logo>.png 
+img: ansible-nginx_logo.png
 github_url: "https://github.com/gofynd/ansible-nginx"
 
 ---
